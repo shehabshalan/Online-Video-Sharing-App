@@ -1,34 +1,66 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import { useHistory } from "react-router-dom";
 import { auth } from "../firebase-config";
 
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(localStorage.getItem("currentUser") || null);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   function logIn(email, password) {
-    return signInWithEmailAndPassword(auth, email, password);
+    setLoading(true);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        history.push("/");
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        alert(error);
+      });
   }
   function signUp(email, password) {
-    return createUserWithEmailAndPassword(auth, email, password);
+    setLoading(true);
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        history.push("/");
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        alert(error);
+      });
   }
   function logOut() {
     return signOut(auth);
   }
 
-  onAuthStateChanged(auth, (currentuser) => {
-    // console.log("Auth", currentuser);
-    setUser(currentuser);
-  });
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (currentuser) => {
+      if (currentuser) {
+        setUser(
+          localStorage.setItem("currentUser", JSON.stringify(currentuser))
+        );
+      } else {
+        setUser(null);
+        localStorage.removeItem("currentUser");
+      }
+    });
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return (
-    <userAuthContext.Provider value={{ user, logIn, signUp, logOut }}>
+    <userAuthContext.Provider value={{ user, loading, logIn, signUp, logOut }}>
       {children}
     </userAuthContext.Provider>
   );
