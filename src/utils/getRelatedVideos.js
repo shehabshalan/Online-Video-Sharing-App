@@ -1,4 +1,4 @@
-const getRelatedVideos = (allVideos, currentVideo) => {
+function getRelatedVideos(allVideos, currentVideo) {
   const relatedVideos = allVideos.filter((v) => {
     return v.category === currentVideo.category && v.id !== currentVideo.id;
   });
@@ -7,6 +7,6 @@ const getRelatedVideos = (allVideos, currentVideo) => {
     return shuffled.slice(0, 3);
   }
   return relatedVideos;
-};
+}
 
-export default getRelatedVideos;
+module.exports = getRelatedVideos;
