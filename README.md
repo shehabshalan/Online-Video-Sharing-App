@@ -6,5 +6,5 @@ it is an online video sharing app where users can upload and stream videos on th
 | React.js  | 18.0.0  |
 | react-router-dom  | 5.3.0  |
 | MUI  | 5.5.3  |
-| MUI  | 9.6.10  |
+| Firebase  | 9.6.10  |
 
