@@ -74,6 +74,12 @@ function Login() {
             {"Don't have an account? Register an account"}
           </Link>
         </Box>
+        <Typography component="p" variant="body2" sx={{ mt: 3 }}>
+          Demo user: <b>demo@demo.com</b>
+        </Typography>
+        <Typography component="p" variant="body2">
+          Password : <b>demodemo</b>
+        </Typography>
       </Box>
     </Container>
   );
