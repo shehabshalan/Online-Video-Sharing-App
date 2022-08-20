@@ -22,8 +22,7 @@ function VideoList() {
         <Grid
           container
           direction="row"
-          justifyContent="space-between"
-          alignItems="center"
+          justifyContent="flex-start"
           spacing={2}
           columns={12}
         >
